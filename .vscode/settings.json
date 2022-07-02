@@ -1,0 +1,9 @@
+{
+	"[json]": {
+		"editor.formatOnSave": true
+	},
+	"editor.formatOnSave": true,
+	"editor.tabSize": 2,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"git.ignoreLimitWarning": true
+}
