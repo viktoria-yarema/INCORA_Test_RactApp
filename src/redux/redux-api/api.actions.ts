@@ -1,4 +1,3 @@
-import { ENDPOINT } from "../../api/api";
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
 import { ApiQueryKey } from "../../api/models/enpoint.model";
 import { FetchParam } from "../../hooks/useFetch";

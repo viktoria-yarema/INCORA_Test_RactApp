@@ -1,4 +1,3 @@
-import { ENDPOINT } from "../../api/api";
 import { Post } from "../../entities/post.entities";
 import { User } from "../../entities/user.entities";
 import { AccamulatorType } from "../redux-api/api.reducer";

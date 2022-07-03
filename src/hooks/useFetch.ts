@@ -1,17 +1,10 @@
 import { camelCase } from "lodash";
 import { useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ENDPOINT } from "../api/api";
 import { ApiMethodEnum } from "../api/models/apiMethod.enum";
-import {
-	ApiQueryKey,
-} from "../api/models/enpoint.model";
+import { ApiQueryKey } from "../api/models/enpoint.model";
 import { ApiStoreData, StoreType } from "../redux/models/store.model";
 import { apiActions } from "../redux/redux-api/api.actions";
-
-const checkendp = "users";
-
-type Fetch = ReturnType<typeof ENDPOINT[typeof checkendp]>;
 
 export type FetchParam<U> = {
 	[ApiMethodEnum.POST]: { data: U };
@@ -40,4 +33,3 @@ export function useFetch<T, K extends ApiMethodEnum>(
 
 	return [response, performFetch];
 }
-
