@@ -17,8 +17,8 @@ interface TableCompProps<T> {
 const renderColumnNames = <K,>(
 	columnNames: Array<keyof K>
 ) => {
-	return columnNames.map((name) => {
-		return <TableCell align="right">{name as string}</TableCell>;
+	return columnNames.map((name, index: number) => {
+		return <TableCell 	key={`key-table_head-${index * 5}`} align="right">{name as string}</TableCell>;
 	});
 };
 
@@ -26,7 +26,7 @@ const renderRowsTable = <U,>(tableRow: U) => {
 	return Object.values(tableRow).map((value: string, index: number) => {
 		return (
 			<TableRow
-				key={`key-table-${index * 2}`}
+				key={`key-table_column-${index * 2}`}
 				sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
 			>
 				<TableCell align="right">{value}</TableCell>;

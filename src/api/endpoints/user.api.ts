@@ -1,28 +1,24 @@
-import { User } from "../../entities/user.entities";
-import { ApiMethod } from "../models/apiMethod.enum";
-import api from "./instanse";
+import { ApiMethodEnum } from "../models/apiMethod.enum";
+import { FetchQueryGet, QueryModelGet } from "../models/enpoint.model";
 
-export enum UserEnum {
-  GetUsers = "users",
-  GetUser = 'user',
+export enum UserApiEnum {
+	GetUsers = "users",
+}
+
+export interface IUserApi {
+	users: FetchQueryGet;
+	user: FetchQueryGet;
 }
 
 export const UserApi = {
-	[UserEnum.GetUsers.toUpperCase()]: {
-    uri: `/${UserEnum.GetUsers}`,
-		method: ApiMethod.GET,
-		// request: async function (): Promise<User[]> {
-		// 	const result = await api['get'](this.uri);
-		// 	return result.data;
-		// },
-  },
-  
-  [UserEnum.GetUser.toUpperCase()]: {
-    uri: `/${UserEnum.GetUsers}`,
-    method:  ApiMethod.GET,
-		// request: async function (): Promise<User> {
-		// 	const result = await api['get'](this.uri);
-		// 	return result.data;
-		// },
-	},
+	users: (): QueryModelGet => ({
+		uri: `/${UserApiEnum.GetUsers}`,
+		method: ApiMethodEnum.GET,
+	}),
+
+	user: (userId: string): QueryModelGet => ({
+		uri: `/${UserApiEnum.GetUsers}/${userId}`,
+		method: ApiMethodEnum.GET,
+	}),
 };
+

@@ -1,4 +1,4 @@
-export enum ApiMethod {
+export enum ApiMethodEnum {
 	POST = "post",
 	GET = "get",
 	PUT = "put",

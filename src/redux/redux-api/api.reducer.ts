@@ -1,8 +1,7 @@
-import { ActionType } from "../models/action.type";
+import { ActionTypeApi } from "../models/action.type";
 import { API_ACTIONS } from "./api.actions";
 import { ENDPOINT } from "../../api/api";
 import { camelCase } from "lodash";
-import { ApiStoreData, StoreType } from "../models/store.model";
 
 export type AccamulatorType<T> = {
 	data: null | T[] | boolean | T;
@@ -12,7 +11,7 @@ export type AccamulatorType<T> = {
 
 const initialState = () => {
 	return Object.keys(ENDPOINT).reduce((acc: any, next: string) => {
-		const normalizeKey = next.toLowerCase();
+		const normalizeKey = camelCase(next);
 
 		const inner = {
 			data: null,
@@ -35,7 +34,7 @@ const onParseKey = (type: string, api: string) => {
 	return camelCase(type.replaceAll(`${api}`, ""));
 };
 
-export const apiReducer = (state = INITIAL_STATE, action: any) => {
+export const apiReducer = (state = INITIAL_STATE, action: ActionTypeApi<any, any>) => {
 	if (action.type.startsWith(API_ACTIONS.FETCH_START)) {
 		const inner = onParseKey(action.type, API_ACTIONS.FETCH_START);
 

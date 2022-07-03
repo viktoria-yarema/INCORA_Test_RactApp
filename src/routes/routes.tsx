@@ -9,7 +9,7 @@ export const getPrivateRoutes = () => ({
 	},
 
 	users: {
-		url: "/",
+		url: "/users",
 		element: <Users />,
 	},
 

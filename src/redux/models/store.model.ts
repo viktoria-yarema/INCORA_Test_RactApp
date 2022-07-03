@@ -1,9 +1,16 @@
-import { UserEnum } from "../../api/endpoints/user.api";
+import { ENDPOINT } from "../../api/api";
+import { Post } from "../../entities/post.entities";
 import { User } from "../../entities/user.entities";
 import { AccamulatorType } from "../redux-api/api.reducer";
 
 export interface ApiStoreData {
-	[UserEnum.GetUsers]: AccamulatorType<User[]>;
+	users: AccamulatorType<User[]>;
+	user: AccamulatorType<User>;
+	posts: AccamulatorType<Post[]>;
+	userPosts: AccamulatorType<Post[]>;
+	updatePost: AccamulatorType<Post>;
+	deletePost: AccamulatorType<Post>;
+	createPost: AccamulatorType<Post>;
 }
 
 export type StoreType = {
