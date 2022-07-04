@@ -1,7 +1,4 @@
-import React, { useEffect, lazy, Suspense } from "react";
-import { useSelector } from "react-redux";
-import { ENDPOINT } from "../../api/api";
-import { UserApi, UserApiEnum } from "../../api/endpoints/user.api";
+import React, { useEffect } from "react";
 import TableComp, { TableDataType } from "../../components/TableComp";
 import { CircularProgress, Container, Typography } from "@mui/material";
 import { User } from "../../entities/user.entities";

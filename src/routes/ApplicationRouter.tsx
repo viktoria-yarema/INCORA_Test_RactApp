@@ -10,10 +10,10 @@ const ApplicationRouter = () => {
 			<PrivateLayout>
 				<Routes>
 					{renderRoutes(getPrivateRoutes())}{" "}
-					{/* <Route
+					<Route
 						path="*"
-						element={<Navigate to={getPrivateRoutes().home.url} replace />}
-					/> */}
+						element={<Navigate to={getPrivateRoutes().users.url} replace />}
+					/>
 				</Routes>
 			</PrivateLayout>
 		</BrowserRouter>

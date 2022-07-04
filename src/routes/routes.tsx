@@ -1,22 +1,16 @@
-import Home from "../modules/home/Home";
 import Post from "../modules/posts/Post";
 import Posts from "../modules/posts/Posts";
 import Users from "../modules/users/Users";
 
 export const getPrivateRoutes = () => ({
-	home: {
-		url: "/",
-		element: <Home />,
-	},
-
 	users: {
-		url: "/users",
+		url: "/",
 		element: <Users />,
 	},
 
 	posts: {
 		url: "/posts",
-		element: <Home />,
+		element: <Users />,
 	},
 
 	post: {
