@@ -15,12 +15,12 @@ export type FetchParam<U> = {
 
 export function useFetch<T, K extends ApiMethodEnum>(
 	endpoint: ApiQueryKey
-): [ApiStoreData[typeof endpoint], (payload: FetchParam<T>[K]) => void] {
+): [ApiStoreData<T>[typeof endpoint], (payload: FetchParam<T>[K]) => void] {
 	const dispatch = useDispatch();
-	const apiState: ApiStoreData = useSelector(
-		(state: StoreType): ApiStoreData => state.api
+	const apiState: ApiStoreData<T> = useSelector(
+		(state: StoreType<T>): ApiStoreData<T> => state.api
 	);
-
+		
 	const performFetch = useCallback(
 		(payload: FetchParam<T>[K]) =>
 			dispatch(apiActions<T, K>().fetchStart(endpoint, payload)),
@@ -28,6 +28,7 @@ export function useFetch<T, K extends ApiMethodEnum>(
 	);
 
 	const response = useMemo(() => {
+		
 		return apiState[endpoint];
 	}, [apiState, endpoint]);
 
