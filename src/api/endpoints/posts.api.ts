@@ -1,13 +1,6 @@
 import { ApiMethodEnum } from "../models/apiMethod.enum";
 import {
-	// FetchQueryGet,
-	// FetchQueryPut,
-	// FetchQueryPost,
-	// FetchQueryDelete,
-	QueryModelPost,
-	QueryModelDelete,
-	QueryModelGet,
-	QueryModelPut,
+	QueryModel
 } from "../models/enpoint.model";
 
 export enum PostsApiRoutesEnum {
@@ -15,47 +8,39 @@ export enum PostsApiRoutesEnum {
 	GetComments = "comments",
 }
 
-// interface IPostApi {
-// 	posts: FetchQueryGet;
-// 	userPosts: FetchQueryGet;
-// 	updatePost: FetchQueryPut;
-// 	deletePost: FetchQueryDelete;
-// 	createPost: FetchQueryPost;
-// }
-
 export const PostsApi = {
-	posts: (): QueryModelGet => ({
+	posts: (): QueryModel => ({
 		uri: `/${PostsApiRoutesEnum.GetPosts}`,
 		method: ApiMethodEnum.GET,
 	}),
 
-	userPosts: (userId: string): QueryModelGet => ({
+	userPosts: (userId: string): QueryModel => ({
 		uri: `/${PostsApiRoutesEnum.GetPosts}?userId=${userId}`,
 		method: ApiMethodEnum.GET,
 	}),
 
-	getPost: (postId: string): QueryModelGet => ({
+	getPost: (postId: string): QueryModel => ({
 		uri: `/${PostsApiRoutesEnum.GetPosts}/${postId}`,
 		method: ApiMethodEnum.GET,
 	}),
 
-	getComments: (postId: string): QueryModelGet => ({
+	getComments: (postId: string): QueryModel => ({
 		uri: `/${PostsApiRoutesEnum.GetComments}?postId=${postId}`,
 		method: ApiMethodEnum.GET,
 	}),
 
-	updatePost: (postId: string): QueryModelPut => ({
+	updatePost: (postId: string): QueryModel => ({
 		uri: `/${PostsApiRoutesEnum.GetPosts}/${postId}`,
 		method: ApiMethodEnum.PUT,
 	}),
 
-	deletePost: (postId: string): QueryModelDelete => ({
+	deletePost: (postId: string): QueryModel => ({
 		uri: `/${PostsApiRoutesEnum.GetPosts}/${postId}`,
 		method: ApiMethodEnum.DELETE,
 	}),
 
-	// createPost: (): QueryModelPost => ({
-	// 	uri: `/${PostsApiRoutesEnum.GetPosts}`,
-	// 	method: ApiMethodEnum.POST,
-	// }),
+	createPost: (): QueryModel => ({
+		uri: `/${PostsApiRoutesEnum.GetPosts}`,
+		method: ApiMethodEnum.POST,
+	}),
 };

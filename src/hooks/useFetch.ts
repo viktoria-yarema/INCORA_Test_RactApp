@@ -4,6 +4,7 @@ import { ApiMethodEnum } from "../api/models/apiMethod.enum";
 import { ApiQueryKey } from "../api/models/enpoint.model";
 import { ApiStoreData } from "../redux/models/store.model";
 import { apiActions } from "../redux/redux-api/api.actions";
+import { AccamulatorType } from "../redux/redux-api/api.reducer";
 import { apiStore } from "../redux/redux-api/api.selector";
 
 export type FetchParam<U> = {
@@ -15,9 +16,9 @@ export type FetchParam<U> = {
 
 export function useFetch<T, K extends ApiMethodEnum>(
 	endpoint: ApiQueryKey
-): [ApiStoreData<T>[typeof endpoint], (payload: FetchParam<T>[K]) => void] {
+): [AccamulatorType<T>, (payload: FetchParam<T>[K]) => void] {
 	const dispatch = useDispatch();
-	const apiState: ApiStoreData<T> = useSelector(apiStore<T>);
+	const apiState: ApiStoreData = useSelector(apiStore);
 
 	const performFetch = useCallback(
 		(payload: FetchParam<T>[K]) =>
@@ -26,7 +27,7 @@ export function useFetch<T, K extends ApiMethodEnum>(
 	);
 
 	const response = useMemo(() => {
-		return apiState[endpoint];
+		return apiState[endpoint] as unknown as AccamulatorType<T>;
 	}, [apiState, endpoint]);
 
 	return [response, performFetch];

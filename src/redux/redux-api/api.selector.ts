@@ -1,3 +1,3 @@
-import { StoreType } from "../models/store.model";
+import { ApiStoreData, StoreType } from "../models/store.model";
 
-export const apiStore = <T>(store: StoreType<T>) => store.api
+export const apiStore = (store: StoreType): ApiStoreData => store.api
