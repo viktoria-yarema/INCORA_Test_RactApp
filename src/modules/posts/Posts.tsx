@@ -23,7 +23,7 @@ import { apiStore } from "../../redux/redux-api/api.selector";
 import { getPrivateRoutes } from "../../routes/routes";
 
 import TableComp, { TableDataType } from "../../components/TableComp";
-import ModalPost from "../components/ModalPost";
+import ModalPost from "./components/ModalPost";
 
 const Posts = () => {
 	const [createPost, setCreatePost] = useState<Omit<

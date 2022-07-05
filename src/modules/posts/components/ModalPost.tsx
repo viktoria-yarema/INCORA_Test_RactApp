@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import ModalComp from "../../components/ModalComp";
+import ModalComp from "../../../components/ModalComp";
 
 interface ModalPostProps {
 	titleModal: string;

@@ -19,7 +19,7 @@ import {
 import { Box } from "@mui/system";
 import { apiActions } from "../../redux/redux-api/api.actions";
 import { getPrivateRoutes } from "../../routes/routes";
-import ModalPost from "../components/ModalPost";
+import ModalPost from "./components/ModalPost";
 
 const Post = () => {
 	const [updatedPost, setUpdatedPost] = useState<Omit<
