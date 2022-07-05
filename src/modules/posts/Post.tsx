@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, generatePath } from "react-router-dom";
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
 import { useFetch } from "../../hooks/useFetch";
 import { apiStore } from "../../redux/redux-api/api.selector";
@@ -15,6 +15,7 @@ import {
 	Typography,
 	Button,
 	TextField,
+	AppBar,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { apiActions } from "../../redux/redux-api/api.actions";
@@ -45,7 +46,7 @@ const Post = () => {
 	>("deletePost");
 
 	const apiState = useSelector(apiStore);
-	const { user, userPosts, createPost } = apiState;
+	const { user, userPosts } = apiState;
 	const { postId } = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Post = () => {
 		postId && fetchComments({ searchQuery: postId });
 	}, [fetchComments, fetchUserPost, postId]);
 
-	const [userPostData, userPostLoading] = parseAcc(userPost);
+	const [userPostData, userPostLoading, userPostError] = parseAcc(userPost);
 	const [postCommentstData, postCommentsLoading] = parseAcc(postComments);
 	const [updatePostData, updatePostLoading, updatePostError] =
 		parseAcc(updatePost);
@@ -76,6 +77,17 @@ const Post = () => {
 		}
 	}, [fetchUpdatePost, postId, updatePostError, updatedPost, userPostData]);
 
+	const navigateToPosts = useCallback(() => {
+		navigate(
+			generatePath(getPrivateRoutes().usersPosts.url, {
+				userId: user.data?.id.toString(),
+			}),
+			{ replace: true }
+		);
+
+		dispatch(apiActions().fetchSuccess("updatePost", null as any));
+	}, [dispatch, navigate, user.data?.id]);
+
 	const onDeletePost = useCallback(() => {
 		postId &&
 			fetchDeletePost({
@@ -87,22 +99,15 @@ const Post = () => {
 			userPosts?.data?.filter(post => post.id.toString() !== postId) || null;
 		dispatch(apiActions().fetchSuccess("userPosts", removeDeletedPost as any));
 
-		navigate(
-			`${getPrivateRoutes().usersPosts.url.replace(
-				":userId",
-				user.data?.id.toString() || ""
-			)}`,
-			{ replace: true }
-		);
+		navigateToPosts();
 
 		!!!deletePostError && setOpenDeleteModal(false);
 	}, [
 		deletePostError,
 		dispatch,
 		fetchDeletePost,
-		navigate,
+		navigateToPosts,
 		postId,
-		user.data?.id,
 		userPosts?.data,
 	]);
 
@@ -119,154 +124,172 @@ const Post = () => {
 	};
 
 	return (
-		<Container>
-			{userPostLoading ? (
-				<CircularProgress />
-			) : (
-				<>
-					{postId && userPostData && (
-						<>
-							{" "}
-							<ModalPost
-								openModal={openEditModal}
-								onCloseModal={() => setOpenEditModal(false)}
-								applyLabel="Edit"
-								onApplyAction={onApplyUpdatePost}
-								onCancelAction={() => setOpenEditModal(false)}
-								titleModal="Edit Post"
-							>
-								<TextField
-									label="Title"
-									value={updatedPost?.title}
-									onChange={event =>
-										setUpdatedPost({
-											body: updatedPost?.body || "",
-											title: event.target.value,
-										})
-									}
-									margin="dense"
-								/>
-								<TextField
-									label="Body"
-									margin="dense"
-									value={updatedPost?.body}
-									onChange={event =>
-										setUpdatedPost({
-											title: updatedPost?.title || "",
-											body: event.target.value,
-										})
-									}
-								/>
-							</ModalPost>
-							<ModalPost
-								openModal={openDeleteModal}
-								onCloseModal={() => setOpenDeleteModal(false)}
-								applyLabel="Delete"
-								onApplyAction={onDeletePost}
-								onCancelAction={() => setOpenDeleteModal(false)}
-								titleModal="Delete Post"
-							>
-								<Typography variant="h6">
-									{" "}
-									Are you sure delete this Post?
-								</Typography>
-							</ModalPost>
-						</>
-					)}
-					<Stack justifyContent="space-between" direction={"row"}>
+		<>
+			<AppBar position="static" color="transparent">
+				<Stack
+					spacing={3}
+					direction={"row"}
+					sx={{
+						marginLeft: "30px",
+					}}
+				>
+					<Button
+						onClick={() =>
+							navigate(getPrivateRoutes().users.url, { replace: true })
+						}
+					>
+						Go to Users page
+					</Button>
+					<Button onClick={navigateToPosts}>Go to Posts</Button>
+				</Stack>
+			</AppBar>
+			<Container>
+				{userPostLoading ? (
+					<CircularProgress />
+				) : (
+					<>
+						{postId && userPostData && (
+							<>
+								{" "}
+								<ModalPost
+									openModal={openEditModal}
+									onCloseModal={() => setOpenEditModal(false)}
+									applyLabel="Edit"
+									onApplyAction={onApplyUpdatePost}
+									onCancelAction={() => setOpenEditModal(false)}
+									titleModal="Edit Post"
+								>
+									<TextField
+										label="Title"
+										value={updatedPost?.title}
+										onChange={event =>
+											setUpdatedPost({
+												body: updatedPost?.body || "",
+												title: event.target.value,
+											})
+										}
+										margin="dense"
+									/>
+									<TextField
+										label="Body"
+										margin="dense"
+										value={updatedPost?.body}
+										onChange={event =>
+											setUpdatedPost({
+												title: updatedPost?.title || "",
+												body: event.target.value,
+											})
+										}
+									/>
+								</ModalPost>
+								<ModalPost
+									openModal={openDeleteModal}
+									onCloseModal={() => setOpenDeleteModal(false)}
+									applyLabel="Delete"
+									onApplyAction={onDeletePost}
+									onCancelAction={() => setOpenDeleteModal(false)}
+									titleModal="Delete Post"
+								>
+									<Typography variant="h6">
+										{" "}
+										Are you sure delete this Post?
+									</Typography>
+								</ModalPost>
+							</>
+						)}
 						<Typography variant="h2" component="h2">
 							Post details
 						</Typography>
-						<Link to={`${getPrivateRoutes().users}`}>
-							<Button>Go to Users page</Button>
-						</Link>
-					</Stack>
-
-					<Typography variant="h4" fontWeight="bold">
-						Author is {user?.data?.name}
-					</Typography>
-					<Divider />
-					<Stack spacing={1} margin="10px">
-						<Typography variant="h5" color="orange">
-							Details:{" "}
+						<Typography variant="h4" fontWeight="bold">
+							Author is {user?.data?.name}
 						</Typography>
-						<Stack direction="row" spacing={2} alignContent="center">
-							<Typography variant="h6" fontWeight="bold">
-								Title:
-							</Typography>
-							{updatePostLoading ? (
-								<CircularProgress />
-							) : (
-								<Typography variant="overline" align="right">
-									{createPost?.data?.title ||
-										updatePostData?.title ||
-										userPostData?.title}
-								</Typography>
-							)}
-						</Stack>
-						<Stack direction="row" spacing={2} alignItems="center">
-							<Typography variant="h6" fontWeight="bold">
-								Content:
-							</Typography>
-							{updatePostLoading ? (
-								<CircularProgress />
-							) : (
-								<Typography variant="body1">
-									{createPost?.data?.body ||
-										updatePostData?.body ||
-										userPostData?.body}
-								</Typography>
-							)}
-						</Stack>
-						<Box
-							component="div"
-							sx={{
-								maxWidth: "300px",
-								display: "flex",
-								columnGap: "15px",
-								margin: "15px 0",
-							}}
-							alignSelf="flex-end"
-						>
-							<Button
-								variant="contained"
-								color="secondary"
-								onClick={() => {
-									setUpdatedPost({
-										title: updatePostData?.title || userPostData?.title || "",
-										body: updatePostData?.body || userPostData?.body || "",
-									});
-									setOpenEditModal(true);
-								}}
-							>
-								Edit
-							</Button>
-							<Button
-								variant="contained"
-								color="error"
-								onClick={() => setOpenDeleteModal(true)}
-							>
-								Delete
-							</Button>
-						</Box>
-					</Stack>
+						<Divider />
+						{userPostError ? (
+							<Typography>Sorry, this post is not exist</Typography>
+						) : (
+							<>
+								<Stack spacing={1} margin="10px">
+									<Typography variant="h5" color="orange">
+										Details:{" "}
+									</Typography>
+									<Stack direction="row" spacing={2} alignContent="center">
+										<Typography variant="h6" fontWeight="bold">
+											Title:
+										</Typography>
+										{updatePostLoading ? (
+											<CircularProgress />
+										) : (
+											<Typography variant="overline" align="right">
+												{updatePostData?.title || userPostData?.title}
+											</Typography>
+										)}
+									</Stack>
+									<Stack direction="row" spacing={2} alignItems="center">
+										<Typography variant="h6" fontWeight="bold">
+											Content:
+										</Typography>
+										{updatePostLoading ? (
+											<CircularProgress />
+										) : (
+											<Typography variant="body1">
+												{updatePostData?.body || userPostData?.body}
+											</Typography>
+										)}
+									</Stack>
+									<Box
+										component="div"
+										sx={{
+											maxWidth: "300px",
+											display: "flex",
+											columnGap: "15px",
+											margin: "15px 0",
+										}}
+										alignSelf="flex-end"
+									>
+										<Button
+											variant="contained"
+											color="secondary"
+											onClick={() => {
+												setUpdatedPost({
+													title:
+														updatePostData?.title || userPostData?.title || "",
+													body:
+														updatePostData?.body || userPostData?.body || "",
+												});
+												setOpenEditModal(true);
+											}}
+										>
+											Edit
+										</Button>
+										<Button
+											variant="contained"
+											color="error"
+											onClick={() => setOpenDeleteModal(true)}
+										>
+											Delete
+										</Button>
+									</Box>
+								</Stack>
 
-					<Divider />
-					{postCommentsLoading ? (
-						<CircularProgress />
-					) : (
-						<Stack direction="column" margin="10px">
-							<Typography variant="h5" color="orange" marginBottom="10px">
-								Comments:
-							</Typography>
-							<Stack direction="column" spacing={1}>
-								{renderComments()}
-							</Stack>
-						</Stack>
-					)}
-				</>
-			)}
-		</Container>
+								<Divider />
+								{postCommentsLoading ? (
+									<CircularProgress />
+								) : (
+									<Stack direction="column" margin="10px">
+										<Typography variant="h5" color="orange" marginBottom="10px">
+											Comments:
+										</Typography>
+										<Stack direction="column" spacing={1}>
+											{renderComments()}
+										</Stack>
+									</Stack>
+								)}
+							</>
+						)}
+					</>
+				)}
+			</Container>
+		</>
 	);
 };
 

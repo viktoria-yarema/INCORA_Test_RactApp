@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Outlet } from "react-router-dom";
+
 interface PrivateLayoutProps {
 	children?: React.ReactNode;
 }

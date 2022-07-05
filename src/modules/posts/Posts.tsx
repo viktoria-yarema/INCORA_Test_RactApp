@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, generatePath, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	CircularProgress,
@@ -7,6 +7,7 @@ import {
 	Typography,
 	TextField,
 	Button,
+	AppBar,
 } from "@mui/material";
 
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
@@ -114,7 +115,9 @@ const Posts = () => {
 		const redirectToPost = (postId: number | undefined) =>
 			postId &&
 			navigate(
-				`${getPrivateRoutes().post.url.replace(":postId", postId.toString())}`,
+				generatePath(getPrivateRoutes().post.url, {
+					postId: postId.toString(),
+				}),
 				{ replace: true }
 			);
 		const tableDataToNormlize = userPosts.data || userPostsData;
@@ -128,77 +131,90 @@ const Posts = () => {
 	}, [navigate, userPosts.data, userPostsData]);
 
 	return (
-		<Container>
-			{userLoading ? (
-				<CircularProgress />
-			) : (
-				<>
-					{" "}
-					{!userError ? (
-						<>
-							<ModalPost
-								openModal={openCreateModal}
-								onCloseModal={() => setOpenCreateModal(false)}
-								applyLabel="Create"
-								onApplyAction={onApplyCreatePost}
-								onCancelAction={() => setOpenCreateModal(false)}
-								titleModal="Add Post"
-							>
-								<TextField
-									label="Title"
-									value={createPost?.title || ""}
-									onChange={event =>
-										setCreatePost({
-											body: createPost?.body || "",
-											title: event.target.value,
-										})
-									}
-									margin="dense"
-								/>
-								<TextField
-									label="Body"
-									margin="dense"
-									value={createPost?.body || ""}
-									onChange={event =>
-										setCreatePost({
-											title: createPost?.title || "",
-											body: event.target.value,
-										})
-									}
-								/>
-							</ModalPost>
+		<>
+			<AppBar position="static" color="transparent">
+				<Link to={`${getPrivateRoutes().users}`}>
+					<Button
+						sx={{
+							marginLeft: "30px",
+						}}
+					>
+						Go to Users page
+					</Button>
+				</Link>
+			</AppBar>
+			<Container>
+				{userLoading ? (
+					<CircularProgress />
+				) : (
+					<>
+						{" "}
+						{!userError ? (
+							<>
+								<ModalPost
+									openModal={openCreateModal}
+									onCloseModal={() => setOpenCreateModal(false)}
+									applyLabel="Create"
+									onApplyAction={onApplyCreatePost}
+									onCancelAction={() => setOpenCreateModal(false)}
+									titleModal="Add Post"
+								>
+									<TextField
+										label="Title"
+										value={createPost?.title || ""}
+										onChange={event =>
+											setCreatePost({
+												body: createPost?.body || "",
+												title: event.target.value,
+											})
+										}
+										margin="dense"
+									/>
+									<TextField
+										label="Body"
+										margin="dense"
+										value={createPost?.body || ""}
+										onChange={event =>
+											setCreatePost({
+												title: createPost?.title || "",
+												body: event.target.value,
+											})
+										}
+									/>
+								</ModalPost>
+								<Typography variant="h2" component="h2">
+									Posts of {userData?.name}
+								</Typography>
+								<Button
+									variant="outlined"
+									color="success"
+									onClick={() => setOpenCreateModal(true)}
+								>
+									Add Post
+								</Button>
+								{postsColumnsNames && postsTableData && (
+									<>
+										{userPostsLoading ? (
+											<CircularProgress />
+										) : (
+											<TableComp
+												columnNames={postsColumnsNames}
+												tableData={postsTableData}
+												button={{ label: "Details" }}
+											/>
+										)}
+									</>
+								)}
+							</>
+						) : (
 							<Typography variant="h2" component="h2">
-								Posts of {userData?.name}
+								Sorry, this user not exist
 							</Typography>
-							<Button
-								variant="outlined"
-								color="success"
-								onClick={() => setOpenCreateModal(true)}
-							>
-								Add Post
-							</Button>
-							{postsColumnsNames && postsTableData && (
-								<>
-									{userPostsLoading ? (
-										<CircularProgress />
-									) : (
-										<TableComp
-											columnNames={postsColumnsNames}
-											tableData={postsTableData}
-											button={{ label: "Details" }}
-										/>
-									)}
-								</>
-							)}
-						</>
-					) : (
-						<Typography variant="h2" component="h2">
-							Sorry, this user not exist
-						</Typography>
-					)}
-				</>
-			)}
-		</Container>
+						)}
+					</>
+				)}
+			</Container>
+		</>
 	);
 };
 
