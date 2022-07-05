@@ -1,4 +1,4 @@
-import api from "../api/endpoints/instanse";
+import api from "../api/helpers/instanse";
 import { ENDPOINT } from "../api/api";
 import { ApiMethodEnum } from "../api/models/apiMethod.enum";
 import { ApiQueryKey } from "../api/models/enpoint.model";

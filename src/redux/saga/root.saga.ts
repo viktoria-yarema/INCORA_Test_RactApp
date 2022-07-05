@@ -2,7 +2,6 @@ import { takeEvery, put, all } from "redux-saga/effects";
 import { apiActions, API_ACTIONS } from "../redux-api/api.actions";
 import { apiHelper } from "../../helpers/api.helper";
 import { ActionTypeApi } from "../models/action.type";
-// import { LOCATION_CHANGE } from "redux-first-history";
 import { camelCase } from "lodash";
 import { ApiQueryKey } from "../../api/models/enpoint.model";
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
