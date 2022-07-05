@@ -1,17 +1,10 @@
 import { camelCase } from "lodash";
 import { useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ENDPOINT } from "../api/api";
 import { ApiMethodEnum } from "../api/models/apiMethod.enum";
-import {
-	ApiQueryKey,
-} from "../api/models/enpoint.model";
+import { ApiQueryKey } from "../api/models/enpoint.model";
 import { ApiStoreData, StoreType } from "../redux/models/store.model";
 import { apiActions } from "../redux/redux-api/api.actions";
-
-const checkendp = "users";
-
-type Fetch = ReturnType<typeof ENDPOINT[typeof checkendp]>;
 
 export type FetchParam<U> = {
 	[ApiMethodEnum.POST]: { data: U };
@@ -22,12 +15,12 @@ export type FetchParam<U> = {
 
 export function useFetch<T, K extends ApiMethodEnum>(
 	endpoint: ApiQueryKey
-): [ApiStoreData[typeof endpoint], (payload: FetchParam<T>[K]) => void] {
+): [ApiStoreData<T>[typeof endpoint], (payload: FetchParam<T>[K]) => void] {
 	const dispatch = useDispatch();
-	const apiState: ApiStoreData = useSelector(
-		(state: StoreType): ApiStoreData => state.api
+	const apiState: ApiStoreData<T> = useSelector(
+		(state: StoreType<T>): ApiStoreData<T> => state.api
 	);
-
+		
 	const performFetch = useCallback(
 		(payload: FetchParam<T>[K]) =>
 			dispatch(apiActions<T, K>().fetchStart(endpoint, payload)),
@@ -35,9 +28,9 @@ export function useFetch<T, K extends ApiMethodEnum>(
 	);
 
 	const response = useMemo(() => {
+		
 		return apiState[endpoint];
 	}, [apiState, endpoint]);
 
 	return [response, performFetch];
 }
-

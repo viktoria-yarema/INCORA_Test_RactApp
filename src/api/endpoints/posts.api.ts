@@ -1,9 +1,9 @@
 import { ApiMethodEnum } from "../models/apiMethod.enum";
 import {
-	FetchQueryGet,
-	FetchQueryPut,
-	FetchQueryPost,
-	FetchQueryDelete,
+	// FetchQueryGet,
+	// FetchQueryPut,
+	// FetchQueryPost,
+	// FetchQueryDelete,
 	QueryModelPost,
 	QueryModelDelete,
 	QueryModelGet,
@@ -14,13 +14,13 @@ export enum PostsApiRoutesEnum {
 	GetPosts = "posts",
 }
 
-interface IPostApi {
-	posts: FetchQueryGet;
-	userPosts: FetchQueryGet;
-	updatePost: FetchQueryPut;
-	deletePost: FetchQueryDelete;
-	createPost: FetchQueryPost;
-}
+// interface IPostApi {
+// 	posts: FetchQueryGet;
+// 	userPosts: FetchQueryGet;
+// 	updatePost: FetchQueryPut;
+// 	deletePost: FetchQueryDelete;
+// 	createPost: FetchQueryPost;
+// }
 
 export const PostsApi = {
 	posts: (): QueryModelGet => ({

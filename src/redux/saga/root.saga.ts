@@ -2,7 +2,7 @@ import { takeEvery, put, all } from "redux-saga/effects";
 import { apiActions, API_ACTIONS } from "../redux-api/api.actions";
 import { apiHelper } from "../../helpers/api.helper";
 import { ActionTypeApi } from "../models/action.type";
-import { LOCATION_CHANGE } from "redux-first-history";
+// import { LOCATION_CHANGE } from "redux-first-history";
 import { camelCase } from "lodash";
 import { ApiQueryKey } from "../../api/models/enpoint.model";
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
@@ -26,10 +26,10 @@ export function* onApiLoad(action: any) {
 }
 
 export function* watchApiLoad() {
-	yield takeEvery((action: any) => {
-		// console.log(action, 'action from takeevery')
-		return action.type.startsWith(API_ACTIONS.FETCH_START);
-	}, onApiLoad);
+	yield takeEvery(
+		(action: any) => action.type.startsWith(API_ACTIONS.FETCH_START),
+		onApiLoad
+	);
 }
 
 export default function* rootSaga() {

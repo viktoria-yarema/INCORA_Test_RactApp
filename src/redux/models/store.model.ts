@@ -1,20 +1,17 @@
-import { ENDPOINT } from "../../api/api";
+import { ApiQueryKey } from "../../api/models/enpoint.model";
 import { Post } from "../../entities/post.entities";
 import { User } from "../../entities/user.entities";
 import { AccamulatorType } from "../redux-api/api.reducer";
 
-export interface ApiStoreData {
-	users: AccamulatorType<User[]>;
-	user: AccamulatorType<User>;
-	posts: AccamulatorType<Post[]>;
-	userPosts: AccamulatorType<Post[]>;
-	updatePost: AccamulatorType<Post>;
-	deletePost: AccamulatorType<Post>;
-	createPost: AccamulatorType<Post>;
-}
 
-export type StoreType = {
-	api: ApiStoreData;
+export type StoreTypes = User | Post | User[] | Post[];
+
+export type ApiStoreData<Type> = {
+	[x in ApiQueryKey]: AccamulatorType<Type>;
+};
+
+export type StoreType<V = StoreTypes> = {
+	api: ApiStoreData<V>;
 
 	router: {
 		action: string;

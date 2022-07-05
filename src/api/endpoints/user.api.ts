@@ -5,10 +5,10 @@ export enum UserApiEnum {
 	GetUsers = "users",
 }
 
-export interface IUserApi {
-	users: FetchQueryGet;
-	user: FetchQueryGet;
-}
+// export interface IUserApi {
+// 	users: FetchQueryGet;
+// 	user: FetchQueryGet;
+// }
 
 export const UserApi = {
 	users: (): QueryModelGet => ({

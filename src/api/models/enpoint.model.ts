@@ -1,7 +1,6 @@
 import { ENDPOINT } from "../api";
 import { ApiMethodEnum } from "./apiMethod.enum";
 
-
 export type ApiQueryKey = keyof typeof ENDPOINT;
 
 export type FetchQueryGet = (searchParamsGet?: string | never) => QueryModelGet;
@@ -31,30 +30,3 @@ export interface QueryModelDelete {
 	uri: string;
 	method: ApiMethodEnum.DELETE;
 }
-
-export interface RequestDataGet {
-	searchQuery: string;
-}
-
-export interface RequestDataPost<T> {
-	data: T;
-}
-
-export interface RequestDataPut<T> {
-	searchQuery: string;
-	data: T;
-}
-
-export interface RequestDataDelete {
-	searchQuery: string;
-}
-
-export type GetFetchParamsObjType<U, DataType> = U extends FetchQueryGet
-	? RequestDataGet
-	: U extends FetchQueryPost
-	? Required<RequestDataPost<DataType>>
-	: U extends FetchQueryPut
-	? Required<RequestDataPut<DataType>>
-	: U extends FetchQueryDelete
-	? Required<RequestDataDelete>
-	: undefined;
