@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import TableComp, { TableDataType } from "../../components/TableComp";
 import { CircularProgress, Container, Typography } from "@mui/material";
-import { User } from "../../entities/user.entities";
+import { UserModel } from "../../entities/user.entities";
 import { useFetch } from "../../hooks/useFetch";
 
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
@@ -15,7 +15,7 @@ import {
 } from "../../helpers/normalizeTableValues.helper";
 
 const Users = () => {
-	const [users, fetchUsers] = useFetch<User[], ApiMethodEnum.GET>("users");
+	const [users, fetchUsers] = useFetch<UserModel[], ApiMethodEnum.GET>("users");
 
 	useEffect(() => {
 		fetchUsers({ searchQuery: undefined });
@@ -37,14 +37,17 @@ const Users = () => {
 			return;
 		}
 
-		const redirectToPost = (userId: string | undefined) =>
-			navigate(`${getPrivateRoutes().posts.url}/${userId}`);
+		const redirectToPost = (userId: number | undefined) =>
+			userId &&
+			navigate(
+				`${getPrivateRoutes().usersPosts.url.replace(":userId", userId.toString())}`,
+				{ replace: true }
+			);
 
 		return usersData.map(
 			item =>
 				({
 					data: replaceObjectToArray(item),
-					// href: `${getPrivateRoutes().posts.url}/${item.id}`,
 					event: () => redirectToPost(item.id),
 				} as TableDataType)
 		);

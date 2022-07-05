@@ -8,13 +8,8 @@ export const getPrivateRoutes = () => ({
 		element: <Users />,
 	},
 
-	posts: {
-		url: "/posts",
-		element: <Users />,
-	},
-
 	post: {
-		url: "/posts/:postId",
+		url: "/post/:postId",
 		element: <Post />,
 	},
 

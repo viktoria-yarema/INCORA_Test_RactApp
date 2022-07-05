@@ -2,8 +2,8 @@ import { ActionType, ActionTypeApi } from "../models/action.type";
 import { API_ACTIONS } from "./api.actions";
 import { ENDPOINT } from "../../api/api";
 import { camelCase } from "lodash";
-import { User } from "../../entities/user.entities";
-import { Post } from "../../entities/post.entities";
+import { UserModel } from "../../entities/user.entities";
+import { PostModel } from "../../entities/post.entities";
 import { ApiStoreData } from "../models/store.model";
 import { ApiQueryKey } from "../../api/models/enpoint.model";
 
@@ -13,9 +13,9 @@ export type AccamulatorType<T> = {
 	error: null | any;
 };
 
-const initialState = (): ApiStoreData<User | Post> => {
+const initialState = (): ApiStoreData<UserModel | PostModel> => {
 	const buildedAcc = Object.keys(ENDPOINT).reduce(
-		(acc: ApiStoreData<User | Post> | {}, next: string) => {
+		(acc: ApiStoreData<UserModel | PostModel> | {}, next: string) => {
 			const normalizeKey = camelCase(next);
 
 			const inner = {
@@ -34,10 +34,10 @@ const initialState = (): ApiStoreData<User | Post> => {
 		{}
 	);
 
-	return buildedAcc as ApiStoreData<User | Post>;
+	return buildedAcc as ApiStoreData<UserModel | PostModel>;
 };
 
-const INITIAL_STATE: ApiStoreData<User | Post> = initialState();
+const INITIAL_STATE: ApiStoreData<UserModel | PostModel> = initialState();
 
 const onParseKey = (type: ActionType, api: string): ApiQueryKey => {
 	return camelCase(type.replaceAll(`${api}`, "")) as ApiQueryKey;
@@ -45,7 +45,7 @@ const onParseKey = (type: ActionType, api: string): ApiQueryKey => {
 
 export const apiReducer = (
 	state = INITIAL_STATE,
-	action: ActionTypeApi<User | Post, any>
+	action: ActionTypeApi<UserModel | PostModel, any>
 ) => {
 	if (action.type.startsWith(API_ACTIONS.FETCH_START)) {
 		const inner: ApiQueryKey = onParseKey(action.type, API_ACTIONS.FETCH_START);

@@ -66,11 +66,10 @@ const TableComp: FC<TableCompProps> = ({ columnNames, tableData, button }) => {
 				</TableHead>
 				<TableBody>
 					{tableData.map((row: TableDataType, index: number) => (
-						<>
-							{console.log(row.event, "row eve button")}
-							<TableRow key={`key-table_row-${index * 2}${row}`}>
-								{renderRowsTable(row.data)}
-
+						<TableRow key={`key-table_row-${index * 2}${row}`}>
+							{renderRowsTable(row.data)}
+							<TableCell align="right">
+								{" "}
 								{button && (
 									<Button
 										color="primary"
@@ -81,8 +80,8 @@ const TableComp: FC<TableCompProps> = ({ columnNames, tableData, button }) => {
 										{button.label}
 									</Button>
 								)}
-							</TableRow>
-						</>
+							</TableCell>
+						</TableRow>
 					))}
 				</TableBody>
 			</Table>

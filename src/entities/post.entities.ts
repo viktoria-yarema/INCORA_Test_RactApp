@@ -1,14 +1,14 @@
-import { User } from "./user.entities";
+import { UserModel } from "./user.entities";
 
-export interface Post {
-	userId: string;
-	id: string;
+export interface PostModel {
+	userId: number;
+	id: number;
 	title: string;
 	body: string;
 }
 
-export interface Comments
-	extends Pick<User, "name" | "email" | "id">,
-		Pick<Post, "body"> {
+export interface CommentsModel
+	extends Pick<UserModel, "name" | "email" | "id">,
+		Pick<PostModel, "body"> {
 	postId: string;
 }

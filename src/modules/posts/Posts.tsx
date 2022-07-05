@@ -3,8 +3,8 @@ import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ApiMethodEnum } from "../../api/models/apiMethod.enum";
 import TableComp, { TableDataType } from "../../components/TableComp";
-import { Post } from "../../entities/post.entities";
-import { User } from "../../entities/user.entities";
+import { PostModel } from "../../entities/post.entities";
+import { UserModel } from "../../entities/user.entities";
 import {
 	normalizeColumnsNames,
 	replaceObjectToArray,
@@ -14,8 +14,8 @@ import { useFetch } from "../../hooks/useFetch";
 import { getPrivateRoutes } from "../../routes/routes";
 
 const Posts = () => {
-	const [user, fetchUser] = useFetch<User, ApiMethodEnum.GET>("user");
-	const [userPosts, fetchUserPosts] = useFetch<Post[], ApiMethodEnum.GET>(
+	const [user, fetchUser] = useFetch<UserModel, ApiMethodEnum.GET>("user");
+	const [userPosts, fetchUserPosts] = useFetch<PostModel[], ApiMethodEnum.GET>(
 		"userPosts"
 	);
 
@@ -23,7 +23,7 @@ const Posts = () => {
 	const navigate = useNavigate();
 
 	const [userData, userLoading, userError] = parseAcc(user);
-	const [userPostsData, userPostsLoading] = parseAcc<Post[]>(userPosts);
+	const [userPostsData, userPostsLoading] = parseAcc<PostModel[]>(userPosts);
 
 	useEffect(() => {
 		if (userId) {
@@ -44,14 +44,17 @@ const Posts = () => {
 			return;
 		}
 
-		const redirectToPost = (postId: string | undefined) =>
-			navigate(`${getPrivateRoutes().post.url}/${postId}`);
+		const redirectToPost = (postId: number | undefined) =>
+			postId &&
+			navigate(
+				`${getPrivateRoutes().post.url.replace(":postId", postId.toString())}`,
+				{ replace: true }
+			);
 
 		return userPostsData.map(
 			item =>
 				({
 					data: replaceObjectToArray(item),
-					// href: `${getPrivateRoutes().posts.url}/${item.id}`,
 					event: () => redirectToPost(item.id),
 				} as TableDataType)
 		);

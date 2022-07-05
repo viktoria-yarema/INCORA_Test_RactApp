@@ -12,6 +12,7 @@ import {
 
 export enum PostsApiRoutesEnum {
 	GetPosts = "posts",
+	GetComments = "comments",
 }
 
 // interface IPostApi {
@@ -33,6 +34,16 @@ export const PostsApi = {
 		method: ApiMethodEnum.GET,
 	}),
 
+	getPost: (postId: string): QueryModelGet => ({
+		uri: `/${PostsApiRoutesEnum.GetPosts}/${postId}`,
+		method: ApiMethodEnum.GET,
+	}),
+
+	getComments: (postId: string): QueryModelGet => ({
+		uri: `/${PostsApiRoutesEnum.GetComments}?postId=${postId}`,
+		method: ApiMethodEnum.GET,
+	}),
+
 	updatePost: (postId: string): QueryModelPut => ({
 		uri: `/${PostsApiRoutesEnum.GetPosts}/${postId}`,
 		method: ApiMethodEnum.PUT,
@@ -43,8 +54,8 @@ export const PostsApi = {
 		method: ApiMethodEnum.DELETE,
 	}),
 
-	createPost: (): QueryModelPost => ({
-		uri: `/${PostsApiRoutesEnum.GetPosts}`,
-		method: ApiMethodEnum.POST,
-	}),
+	// createPost: (): QueryModelPost => ({
+	// 	uri: `/${PostsApiRoutesEnum.GetPosts}`,
+	// 	method: ApiMethodEnum.POST,
+	// }),
 };

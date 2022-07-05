@@ -1,10 +1,10 @@
 import { ApiQueryKey } from "../../api/models/enpoint.model";
-import { Post } from "../../entities/post.entities";
-import { User } from "../../entities/user.entities";
+import { PostModel } from "../../entities/post.entities";
+import { UserModel } from "../../entities/user.entities";
 import { AccamulatorType } from "../redux-api/api.reducer";
 
 
-export type StoreTypes = User | Post | User[] | Post[];
+export type StoreTypes = UserModel | PostModel | UserModel[] | PostModel[];
 
 export type ApiStoreData<Type> = {
 	[x in ApiQueryKey]: AccamulatorType<Type>;

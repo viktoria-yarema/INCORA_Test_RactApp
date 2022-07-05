@@ -1,28 +1,28 @@
-export type Geo = {
+export type GeoModel = {
   lat: string
   lng: string
 }
 
-export interface Address {
+export interface AddressModel {
   street: string;
   suite: string;
   city: string;
   zipcode: string;
-  geo: Geo;
+  geo: GeoModel;
 }
 
-export interface Company extends Pick<User, 'name'> {
+export interface CompanyModel extends Pick<UserModel, 'name'> {
   catchPhrase: string;
   bs: string;
 }
 
-export interface User {
-  id: string;
+export interface UserModel {
+  id: number;
   name: string;
   username: string;
   email: string;
-  address: Address;
+  address: AddressModel;
   phone: string;
   website: string;
-  company: Company 
+  company: CompanyModel 
 }
