@@ -1,5 +1,5 @@
 import { ApiMethodEnum } from "../models/apiMethod.enum";
-import { FetchQueryGet, QueryModelGet } from "../models/enpoint.model";
+import { QueryModelGet } from "../models/enpoint.model";
 
 export enum UserApiEnum {
 	GetUsers = "users",
@@ -21,4 +21,3 @@ export const UserApi = {
 		method: ApiMethodEnum.GET,
 	}),
 };
-
